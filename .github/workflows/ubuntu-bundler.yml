@@ -7,11 +7,12 @@ on:
     branches:
       - master
       - 3.2
+      - macos
 
 jobs:
   ubuntu_bundler:
     name: Bundler ${{ matrix.bundler.name }} (${{ matrix.ruby.name }})
-    runs-on: ubuntu-18.04
+    runs-on: macos-10.15
     strategy:
       fail-fast: false
       matrix:
@@ -39,7 +40,7 @@ jobs:
           ruby-version: ${{ matrix.ruby.value }}
           bundler: none
       - name: Install graphviz
-        run: sudo apt-get install graphviz -y
+        run: brew install graphviz
         if: matrix.bundler.value == ''
       - name: Replace version
         run: BUNDLER_SPEC_SUB_VERSION=${{ matrix.bundler.value }} bin/rake override_version
