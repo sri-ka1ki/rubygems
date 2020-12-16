@@ -33,7 +33,8 @@ module Bundler
       end
 
       def copy_for(platforms)
-        platforms.select! {|p| for?(p) }
+        STDOUT.puts "platforms: #{platforms}"
+        platforms.select! {|p| STDOUT.puts "p: #{p}"; STDOUT.puts "@specs[p]: #{@specs[p]}"; for?(p) }
         return unless platforms.any?
 
         copied_sg = self.class.new(@all_specs)
