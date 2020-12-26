@@ -1233,7 +1233,7 @@ An Array (#{env.inspect}) was passed in from #{caller[3]}
           next unless $~
         end
 
-        spec.activate if already_loaded?(file)
+        spec.to_spec.activate if already_loaded?(file)
 
         @path_to_default_spec_map[file] = spec
         @path_to_default_spec_map[file.sub(suffix_regexp, "")] = spec
