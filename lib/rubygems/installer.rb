@@ -453,9 +453,9 @@ class Gem::Installer
   # Writes the full .gemspec specification (in Ruby) to the gem home's
   # specifications/default directory.
 
-  def write_default_spec
+  def write_default_spec(include_stub_files: true)
     File.open(default_spec_file, "w") do |file|
-      file.puts spec.to_ruby
+      file.puts spec.to_ruby(include_stub_files: include_stub_files)
     end
   end
 

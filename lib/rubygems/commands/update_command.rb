@@ -182,7 +182,9 @@ command to remove old versions.
       say "Installing RubyGems #{version}" unless options[:silent]
 
       installed = preparing_gem_layout_for(version) do
-        system Gem.ruby, '--disable-gems', 'setup.rb', *args
+        preparing_default_gemspecs_for(version) do
+          system Gem.ruby, '--disable-gems', 'setup.rb', *args
+        end
       end
 
       say "RubyGems system software updated" if installed unless options[:silent]
@@ -206,6 +208,19 @@ command to remove old versions.
       end
 
       status
+    end
+  end
+
+  def preparing_default_gemspecs_for(version)
+    if Gem::Version.new(version) >= Gem::Version.new("3.3.a")
+      yield
+    else
+      Gem::Specification.each_default_spec do |spec|
+        installer = Gem::Installer.for_spec(spec)
+        installer.write_default_spec(include_stub_files: false)
+      end
+
+      yield
     end
   end
 
