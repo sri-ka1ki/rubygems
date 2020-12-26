@@ -64,6 +64,13 @@ jobs:
         working-directory: ./bundler
       - name: Check rails can be installed
         run: gem install rails
+      - name: Check default gem gets activated
+        run: ruby -rjson -e 'exit(Gem.loaded_specs["json"].version.to_s != "2.5.1")'
+      - name: Check upgraded default gem gets activated
+        run: |
+          gem install json:2.5.1
+          ruby -rjson -e 'exit(Gem.loaded_specs["json"].version.to_s == "2.5.1")'
+          ruby -rjson -e 'exit($LOADED_FEATURES.grep(/json/).all?{|lf| lf =~ /json-2.5.1/})'
     timeout-minutes: 10
 
   install_rubygems_windows:
